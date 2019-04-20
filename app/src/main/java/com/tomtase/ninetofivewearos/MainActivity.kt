@@ -1,13 +1,19 @@
 package com.tomtase.ninetofivewearos
 
+import android.content.Context
 import android.os.Bundle
 import android.support.wearable.activity.WearableActivity
 import kotlinx.android.synthetic.main.activity_main.*
+import java.io.BufferedReader
+import java.io.FileNotFoundException
+import java.io.InputStreamReader
 import java.text.SimpleDateFormat
-import java.time.LocalDateTime
 import java.util.*
 
 class MainActivity : WearableActivity() {
+
+    val fileName = "work-times.txt"
+    val fileTimeFormat = SimpleDateFormat("EEE d.M. HH:mm")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,10 +25,12 @@ class MainActivity : WearableActivity() {
         val time = SimpleDateFormat("EEE d.M.").format(Date())
         weekday.text = time
 
-        setTargetTimes(Date())
+        val startTime = readFile()
+        setTargetTimes(startTime)
+
     }
 
-    fun setTargetTimes(startTime: Date) {
+    private fun setTargetTimes(startTime: Date) {
         val currentMilliseconds = Date().time - startTime.time
         val minutes = currentMilliseconds/60000
         val roundedMinutes = (minutes/30)*30 //in 30min steps
@@ -36,8 +44,56 @@ class MainActivity : WearableActivity() {
 
         val target = SimpleDateFormat("HH:mm").format(targetTime)
         timeTarget.text = "$target ($lengthInHours)"
-        
+
         val target2 = SimpleDateFormat("HH:mm").format(targetTime2)
         timeTarget2.text = "$target2 (${lengthInHours+0.5})"
+    }
+
+    private fun writeToFile(date: Date) {
+        val entry = "${fileTimeFormat.format(date)}\n"
+        try {
+            val outputStream = openFileOutput(fileName, Context.MODE_APPEND or Context.MODE_PRIVATE)
+            outputStream.write(entry.toByteArray())
+            outputStream.close()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+    }
+
+    private fun readFile(): Date {
+        try {
+            val fis = openFileInput(fileName)
+            val isr = InputStreamReader(fis)
+            val bufferedReader = BufferedReader(isr)
+            val sb = StringBuilder()
+            var previousLine: String? = null
+            var line: String? = bufferedReader.readLine()
+            while (line != null) {
+                sb.insert(0, "$line${System.getProperty("line.separator")}")
+                previousLine = line
+                line = bufferedReader.readLine()
+            }
+            days.text = sb.toString()
+
+            val current = Date()
+            val latest = fileTimeFormat.parse(previousLine)
+
+            val comparisonFormat = SimpleDateFormat("yyyyMMdd")
+
+            return if (comparisonFormat.format(current) == comparisonFormat.format(latest))
+                latest
+            else {
+                writeToFile(current)
+                current
+            }
+
+        } catch (e: FileNotFoundException) {
+            val current = Date()
+            writeToFile(current)
+            return current
+        }
+
+        return Date()
     }
 }
