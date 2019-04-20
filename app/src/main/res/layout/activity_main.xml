@@ -29,6 +29,10 @@
             <TextView
                     android:text="TextView"
                     android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:id="@+id/normalTime" android:textAlignment="center"/>
+            <TextView
+                    android:text="TextView"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content" android:id="@+id/timeTarget" android:textAlignment="center"/>
             <TextView
                     android:text="TextView"

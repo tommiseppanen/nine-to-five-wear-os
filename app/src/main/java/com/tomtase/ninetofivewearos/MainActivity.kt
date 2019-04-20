@@ -18,9 +18,21 @@ class MainActivity : WearableActivity() {
 
         val time = SimpleDateFormat("EEE d.M.").format(Date())
         weekday.text = time
+
+        setTargetTimes(Date())
     }
 
     fun setTargetTimes(startTime: Date) {
-        val currentMinutes = Date().time - startTime.time
+        val currentMilliseconds = Date().time - startTime.time
+        val minutes = currentMilliseconds/60000
+        val roundedMinutes = (minutes/30)*30 //in 30min steps
+        val targetTime =  Date(startTime.time + (roundedMinutes+30)*60000)
+        val targetTime2 = Date(startTime.time + (roundedMinutes+60)*60000)
+        val lengthInHours = roundedMinutes/60.0+0.5
+        val startTimeString = SimpleDateFormat("HH:mm").format(startTime)
+        val endTime = SimpleDateFormat("HH:mm").format(Date(startTime.time+480*60000))
+        normalTime.text = "$startTimeString - $endTime (7.5h)"
+        timeTarget.text = SimpleDateFormat("HH:mm").format(targetTime)
+        timeTarget2.text = SimpleDateFormat("HH:mm").format(targetTime2)
     }
 }
