@@ -12,8 +12,8 @@ import java.util.*
 
 class MainActivity : WearableActivity() {
 
-    val fileName = "work-times.txt"
-    val fileTimeFormat = SimpleDateFormat("EEE d.M. HH:mm")
+    val fileName = "start-times.txt"
+    val fileTimeFormat = SimpleDateFormat("EEE d.M.yy HH:mm")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
