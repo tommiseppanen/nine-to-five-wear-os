@@ -1,1 +1,1 @@
-# nine-to-five-wear-os
+# Nine to Five (Wear OS port)
