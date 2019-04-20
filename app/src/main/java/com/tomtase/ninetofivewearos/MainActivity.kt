@@ -29,10 +29,15 @@ class MainActivity : WearableActivity() {
         val targetTime =  Date(startTime.time + (roundedMinutes+30)*60000)
         val targetTime2 = Date(startTime.time + (roundedMinutes+60)*60000)
         val lengthInHours = roundedMinutes/60.0+0.5
+
         val startTimeString = SimpleDateFormat("HH:mm").format(startTime)
-        val endTime = SimpleDateFormat("HH:mm").format(Date(startTime.time+480*60000))
-        normalTime.text = "$startTimeString - $endTime (7.5h)"
-        timeTarget.text = SimpleDateFormat("HH:mm").format(targetTime)
-        timeTarget2.text = SimpleDateFormat("HH:mm").format(targetTime2)
+        val endTimeString = SimpleDateFormat("HH:mm").format(Date(startTime.time+480*60000))
+        normalTime.text = "$startTimeString - $endTimeString (7.5h)"
+
+        val target = SimpleDateFormat("HH:mm").format(targetTime)
+        timeTarget.text = "$target ($lengthInHours)"
+        
+        val target2 = SimpleDateFormat("HH:mm").format(targetTime2)
+        timeTarget2.text = "$target2 (${lengthInHours+0.5})"
     }
 }
