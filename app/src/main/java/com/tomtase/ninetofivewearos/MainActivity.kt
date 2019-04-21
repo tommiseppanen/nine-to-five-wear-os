@@ -18,16 +18,15 @@ class MainActivity : WearableActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+    }
 
-        // Enables Always-on
-        setAmbientEnabled()
-
-        val time = SimpleDateFormat("EEE d.M.").format(Date())
+    override fun onResume() {
+        super.onResume()
+        val time = SimpleDateFormat("EEE d.M. HH:mm").format(Date())
         weekday.text = time
 
         val startTime = readFile()
         setTargetTimes(startTime)
-
     }
 
     private fun setTargetTimes(startTime: Date) {
