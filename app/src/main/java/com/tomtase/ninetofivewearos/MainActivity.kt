@@ -22,7 +22,7 @@ class MainActivity : WearableActivity() {
 
     override fun onResume() {
         super.onResume()
-        val time = SimpleDateFormat("EEE d.M. HH:mm").format(Date())
+        val time = SimpleDateFormat("HH:mm EEE d.M.").format(Date())
         weekday.text = time
 
         val startTime = readFile()
@@ -42,10 +42,10 @@ class MainActivity : WearableActivity() {
         normalTime.text = "$startTimeString - $endTimeString (7.5h)"
 
         val target = SimpleDateFormat("HH:mm").format(targetTime)
-        timeTarget.text = "$target ($lengthInHours)"
+        timeTarget.text = "$target (${lengthInHours}h)"
 
         val target2 = SimpleDateFormat("HH:mm").format(targetTime2)
-        timeTarget2.text = "$target2 (${lengthInHours+0.5})"
+        timeTarget2.text = "$target2 (${lengthInHours+0.5}h)"
     }
 
     private fun writeToFile(date: Date) {
