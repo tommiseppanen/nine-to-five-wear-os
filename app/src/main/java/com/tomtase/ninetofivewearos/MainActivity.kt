@@ -37,15 +37,18 @@ class MainActivity : WearableActivity() {
         val targetTime2 = Date(startTime.time + (roundedMinutes+60)*60000)
         val lengthInHours = roundedMinutes/60.0+0.5
 
+        //reduce lunch break
+        val realLengthInHours = if (lengthInHours > 4.0) lengthInHours - 0.5 else lengthInHours;
+
         val startTimeString = SimpleDateFormat("HH:mm").format(startTime)
         val endTimeString = SimpleDateFormat("HH:mm").format(Date(startTime.time+480*60000))
         normalTime.text = "$startTimeString - $endTimeString (7.5h)"
 
         val target = SimpleDateFormat("HH:mm").format(targetTime)
-        timeTarget.text = "$target (${lengthInHours}h)"
+        timeTarget.text = "$target (${realLengthInHours}h)"
 
         val target2 = SimpleDateFormat("HH:mm").format(targetTime2)
-        timeTarget2.text = "$target2 (${lengthInHours+0.5}h)"
+        timeTarget2.text = "$target2 (${realLengthInHours+0.5}h)"
     }
 
     private fun writeToFile(date: Date) {
